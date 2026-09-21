@@ -20,16 +20,21 @@
     "device",
     "screen"
   ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
     },
     "./data/iphones.json": "./data/iphones.json",
     "./data/iphones.csv": "./data/iphones.csv"
   },
   "files": [
-    "index.js",
+    "dist/",
     "index.d.ts",
     "data/",
     "README.md",
@@ -39,7 +44,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test",
-    "sync": "node scripts/sync.mjs"
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/build.mjs && node --test --test-timeout=1000",
+    "sync": "node scripts/sync.mjs && node scripts/build.mjs",
+    "prepublishOnly": "npm test"
   }
 }

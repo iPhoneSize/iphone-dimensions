@@ -1,0 +1,56 @@
+# Updates the dataset and opens a pull request. Does not publish to npm.
+
+name: sync
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Sync dataset
+        run: npm run sync > /tmp/iphone-dimensions-sync.txt
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Test
+        if: steps.changes.outputs.changed == 'true'
+        run: npm test
+
+      - name: Stage summary
+        if: steps.changes.outputs.changed == 'true'
+        run: cp /tmp/iphone-dimensions-sync.txt sync-summary.txt
+
+      - name: Create pull request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          commit-message: Sync iPhone dimensions
+          title: Sync iPhone dimensions
+          body-path: sync-summary.txt
+          branch: sync/iphones
+          add-paths: |
+            data/iphones.json
+            data/iphones.csv
+            dist/data.js
+            dist/index.js
+            dist/index.cjs

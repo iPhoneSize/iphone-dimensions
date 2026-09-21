@@ -1,2 +1,5 @@
 node_modules
 .DS_Store
+data/*.tmp
+data/*.bak
+sync-summary.txt
