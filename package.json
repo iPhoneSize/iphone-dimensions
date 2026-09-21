@@ -1,0 +1,45 @@
+{
+  "name": "iphone-dimensions",
+  "version": "1.0.0",
+  "description": "Apple's published dimensions for every iPhone since the iPhone 7: height, width, depth, weight, display and pixel density, in mm and inches, each row cited to Apple's tech specs.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "homepage": "https://iphonesize.com/data-sources",
+  "repository": "github:iphonesize/iphone-dimensions",
+  "bugs": {
+    "url": "https://github.com/iphonesize/iphone-dimensions/issues"
+  },
+  "keywords": [
+    "iphone",
+    "apple",
+    "dimensions",
+    "size",
+    "specs",
+    "dataset",
+    "device",
+    "screen"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./data/iphones.json": "./data/iphones.json",
+    "./data/iphones.csv": "./data/iphones.csv"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "data/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test",
+    "sync": "node scripts/sync.mjs"
+  }
+}
