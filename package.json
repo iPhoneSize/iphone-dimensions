@@ -5,10 +5,13 @@
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
-  "homepage": "https://iphonesize.com/data-sources",
-  "repository": "github:iphonesize/iphone-dimensions",
+  "homepage": "https://iphonesize.com/data",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iPhoneSize/iphone-dimensions.git"
+  },
   "bugs": {
-    "url": "https://github.com/iphonesize/iphone-dimensions/issues"
+    "url": "https://github.com/iPhoneSize/iphone-dimensions/issues"
   },
   "keywords": [
     "iphone",

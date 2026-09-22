@@ -1,8 +1,8 @@
 # iphone-dimensions
 
-Apple's published dimensions for every iPhone since the iPhone 7, as JSON, CSV and an npm package. Height, width, depth, weight, display size, resolution and pixel density, with the Apple page each row was checked against.
+Apple's published dimensions for every iPhone since the iPhone 7: height, width, depth, weight, display, resolution and ppi, with the Apple page linked on every row. JSON, CSV and an npm package.
 
-This is the data behind [iphonesize.com](https://iphonesize.com), which draws any of these phones next to each other at true scale in 3D. The full table is also a plain web page at [iphonesize.com/data](https://iphonesize.com/data).
+It is the data behind [iphonesize.com](https://iphonesize.com), which draws any two phones next to each other at true scale. The table is also a web page at [iphonesize.com/data](https://iphonesize.com/data).
 
 | Phone | Released | Height | Width | Depth | Weight | Display | ppi | Apple source |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -50,7 +50,7 @@ This is the data behind [iphonesize.com](https://iphonesize.com), which draws an
 | iPhone 7 Plus | 2016 | 158.2 mm | 77.9 mm | 7.3 mm | 188 g | 5.5 in | 401 | [specs](https://support.apple.com/en-us/111953) |
 | iPhone 7 | 2016 | 138.3 mm | 67.1 mm | 7.1 mm | 138 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111943) |
 
-The folding iPhone Duo has two rows, one closed and one open. They share a `product_id`. Every number above is Apple's, from the linked specs page, and the JSON adds the Newsroom page for each phone's dates.
+The folding iPhone Duo has two rows, closed and open, sharing one `product_id`.
 
 ## Get the data
 
@@ -77,7 +77,7 @@ findPhones('17 air');      // finds "iPhone Air", which many people call the 17 
 getProduct('iphone-duo');  // both Duo rows, closed first
 ```
 
-Works with `import` and `require`, in Node 18 or later, and in bundlers and browsers. No dependencies. The raw files are exported too: `iphone-dimensions/data/iphones.json` and `iphone-dimensions/data/iphones.csv`.
+Works with `import` and `require`, in Node 18 or later, bundlers and browsers. No dependencies. The raw files are exported as `iphone-dimensions/data/iphones.json` and `.csv`.
 
 ## Fields
 
@@ -98,26 +98,22 @@ Works with `import` and `require`, in Node 18 or later, and in bundlers and brow
 | `source_url` | The Apple tech-specs page the measurements were checked against |
 | `dates_source_url` | The Apple Newsroom page the dates were checked against |
 
-Rows follow the site's lineup order. The top-level `verified` field is the date the measurements were last checked, and `notes` repeats the caveats below in machine-readable form.
+Top-level `verified` is the date the measurements were last checked; `notes` carries the caveats below in machine-readable form.
 
 ## Where the numbers come from
 
-The metric measurements, display size, resolution and pixel density are the values Apple publishes on its tech-specs pages at apple.com and support.apple.com. The dates come from Apple Newsroom. Each row links to both.
+Measurements, display size, resolution and pixel density are Apple's, from the tech-specs page linked on each row. Dates are from Apple Newsroom, linked in the JSON. Nothing is measured or estimated by us.
 
-Three things are ours, not Apple's. The `id` slugs are ours. The inch and ounce values are calculated from Apple's metric figures, so they can differ from Apple's own rounded imperial numbers by 0.01. And `ppi` is Apple's stated figure, which can differ by a few pixels per inch from what you get by dividing the resolution by the marketed diagonal, because the marketed diagonal is rounded.
+The inch and ounce columns are converted from Apple's metric figures and can differ from Apple's own rounded numbers by 0.01. `ppi` is Apple's stated figure. Depth is the body without the camera bump.
 
-Depth is the body only. Apple's consumer tech-specs pages do not list how far the camera protrudes, and this dataset leaves out anything measured or estimated.
+**Not for making cases or accessories.** There are no tolerances, button positions or camera keep-outs here. Apple publishes [dimensional drawings](https://developer.apple.com/accessories/dimensional-drawings/) for that.
 
-**Do not use this to make cases or accessories.** It has no tolerances, button positions, port locations or camera keep-outs. Apple publishes [dimensional drawings](https://developer.apple.com/accessories/dimensional-drawings/) for that.
+## Updates
 
-## Corrections and updates
-
-The files in `data/` and `dist/` are generated. `data/` is copied from the iphonesize.com build with `npm run sync`, which validates both files before replacing them as a pair, and `dist/` is built from `data/`. Please do not edit either by hand in a pull request. If a number is wrong, open an issue with a link to the Apple page and it gets fixed at the source.
-
-Versions follow semver: a patch is a corrected fact or a docs change, a minor adds phones or optional fields, and a major removes or renames a field or changes what one means. New iPhones are added once Apple's spec page is up and checked.
+`data/` is pulled from the iphonesize.com build by `npm run sync` and `dist/` is built from it, so please do not edit either by hand. Wrong number? Open an issue with the Apple page and it gets fixed at the source. Patch releases fix facts, minor releases add phones or fields, major releases change or remove a field.
 
 ## Licence
 
-The code is MIT licensed. The data is a table of facts Apple publishes, and you are free to use it for anything. This licence cannot grant rights that belong to Apple, and nothing here is Apple's text or imagery. If you publish something built on it, a link back to [iphonesize.com](https://iphonesize.com) is appreciated.
+MIT for the code. The data is facts Apple publishes; use it however you like. This licence cannot grant rights that belong to Apple. A link back to [iphonesize.com](https://iphonesize.com) is appreciated.
 
 Not affiliated with Apple. iPhone is a trademark of Apple Inc.
