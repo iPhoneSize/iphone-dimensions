@@ -4,19 +4,53 @@ Apple's published dimensions for every iPhone since the iPhone 7, as JSON, CSV a
 
 This is the data behind [iphonesize.com](https://iphonesize.com), which draws any of these phones next to each other at true scale in 3D. The full table is also a plain web page at [iphonesize.com/data](https://iphonesize.com/data).
 
-| Phone | Height | Width | Depth | Weight | Display |
-| --- | --- | --- | --- | --- | --- |
-| iPhone Duo (closed) | 117.8 mm | 84.1 mm | 11.3 mm | 254 g | 5.4 in |
-| iPhone Duo (open) | 117.8 mm | 164.6 mm | 5.2 mm | 254 g | 7.6 in |
-| iPhone 18 Pro Max | 163.4 mm | 78 mm | 8.75 mm | 249 g | 6.9 in |
-| iPhone 18 Pro | 150 mm | 71.9 mm | 8.75 mm | 211 g | 6.3 in |
-| iPhone Air | 156.2 mm | 74.7 mm | 5.64 mm | 165 g | 6.5 in |
-| iPhone 16 | 147.6 mm | 71.6 mm | 7.8 mm | 170 g | 6.1 in |
-| iPhone 13 mini | 131.5 mm | 64.2 mm | 7.65 mm | 141 g | 5.4 in |
-| iPhone SE (3rd generation) | 138.4 mm | 67.3 mm | 7.3 mm | 144 g | 4.7 in |
-| iPhone 7 | 138.3 mm | 67.1 mm | 7.1 mm | 138 g | 4.7 in |
+| Phone | Released | Height | Width | Depth | Weight | Display | ppi | Apple source |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| iPhone Duo (closed) | 2026 | 117.8 mm | 84.1 mm | 11.3 mm | 254 g | 5.4 in | 460 | [specs](https://www.apple.com/iphone-duo/specs/) |
+| iPhone Duo (open) | 2026 | 117.8 mm | 164.6 mm | 5.2 mm | 254 g | 7.6 in | 430 | [specs](https://www.apple.com/iphone-duo/specs/) |
+| iPhone 18 Pro Max | 2026 | 163.4 mm | 78 mm | 8.75 mm | 249 g | 6.9 in | 460 | [specs](https://www.apple.com/iphone-18-pro/specs/) |
+| iPhone 18 Pro | 2026 | 150 mm | 71.9 mm | 8.75 mm | 211 g | 6.3 in | 460 | [specs](https://www.apple.com/iphone-18-pro/specs/) |
+| iPhone 17 Pro Max | 2025 | 163.4 mm | 78 mm | 8.75 mm | 233 g | 6.9 in | 460 | [specs](https://support.apple.com/en-us/125091) |
+| iPhone 17 Pro | 2025 | 150 mm | 71.9 mm | 8.75 mm | 206 g | 6.3 in | 460 | [specs](https://support.apple.com/en-us/125090) |
+| iPhone Air | 2025 | 156.2 mm | 74.7 mm | 5.64 mm | 165 g | 6.5 in | 460 | [specs](https://support.apple.com/en-us/125092) |
+| iPhone 17 | 2025 | 149.6 mm | 71.5 mm | 7.95 mm | 177 g | 6.3 in | 460 | [specs](https://support.apple.com/en-us/125089) |
+| iPhone 17e | 2026 | 146.7 mm | 71.5 mm | 7.8 mm | 169 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/126470) |
+| iPhone 16 Pro Max | 2024 | 163 mm | 77.6 mm | 8.25 mm | 227 g | 6.9 in | 460 | [specs](https://support.apple.com/en-us/121032) |
+| iPhone 16 Pro | 2024 | 149.6 mm | 71.5 mm | 8.25 mm | 199 g | 6.3 in | 460 | [specs](https://support.apple.com/en-us/121031) |
+| iPhone 16 Plus | 2024 | 160.9 mm | 77.8 mm | 7.8 mm | 199 g | 6.7 in | 460 | [specs](https://support.apple.com/en-us/121030) |
+| iPhone 16 | 2024 | 147.6 mm | 71.6 mm | 7.8 mm | 170 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/121029) |
+| iPhone 16e | 2025 | 146.7 mm | 71.5 mm | 7.8 mm | 167 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/122208) |
+| iPhone 15 Pro Max | 2023 | 159.9 mm | 76.7 mm | 8.25 mm | 221 g | 6.7 in | 460 | [specs](https://support.apple.com/en-us/111828) |
+| iPhone 15 Pro | 2023 | 146.6 mm | 70.6 mm | 8.25 mm | 187 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111829) |
+| iPhone 15 Plus | 2023 | 160.9 mm | 77.8 mm | 7.8 mm | 201 g | 6.7 in | 460 | [specs](https://support.apple.com/en-us/111830) |
+| iPhone 15 | 2023 | 147.6 mm | 71.6 mm | 7.8 mm | 171 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111831) |
+| iPhone 14 Pro Max | 2022 | 160.7 mm | 77.6 mm | 7.85 mm | 240 g | 6.7 in | 460 | [specs](https://support.apple.com/en-us/111846) |
+| iPhone 14 Pro | 2022 | 147.5 mm | 71.5 mm | 7.85 mm | 206 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111849) |
+| iPhone 14 Plus | 2022 | 160.8 mm | 78.1 mm | 7.8 mm | 203 g | 6.7 in | 458 | [specs](https://support.apple.com/en-us/111854) |
+| iPhone 14 | 2022 | 146.7 mm | 71.5 mm | 7.8 mm | 172 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111850) |
+| iPhone 13 Pro Max | 2021 | 160.8 mm | 78.1 mm | 7.65 mm | 240 g | 6.7 in | 458 | [specs](https://support.apple.com/en-us/111870) |
+| iPhone 13 Pro | 2021 | 146.7 mm | 71.5 mm | 7.65 mm | 204 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111871) |
+| iPhone 13 mini | 2021 | 131.5 mm | 64.2 mm | 7.65 mm | 141 g | 5.4 in | 476 | [specs](https://support.apple.com/en-us/111873) |
+| iPhone 13 | 2021 | 146.7 mm | 71.5 mm | 7.65 mm | 174 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111872) |
+| iPhone SE (3rd generation) | 2022 | 138.4 mm | 67.3 mm | 7.3 mm | 144 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111866) |
+| iPhone 12 Pro Max | 2020 | 160.8 mm | 78.1 mm | 7.4 mm | 228 g | 6.7 in | 458 | [specs](https://support.apple.com/en-us/111874) |
+| iPhone 12 Pro | 2020 | 146.7 mm | 71.5 mm | 7.4 mm | 189 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111875) |
+| iPhone 12 mini | 2020 | 131.5 mm | 64.2 mm | 7.4 mm | 135 g | 5.4 in | 476 | [specs](https://support.apple.com/en-us/111877) |
+| iPhone 12 | 2020 | 146.7 mm | 71.5 mm | 7.4 mm | 164 g | 6.1 in | 460 | [specs](https://support.apple.com/en-us/111876) |
+| iPhone 11 Pro Max | 2019 | 158 mm | 77.8 mm | 8.1 mm | 226 g | 6.5 in | 458 | [specs](https://support.apple.com/en-us/111878) |
+| iPhone 11 Pro | 2019 | 144 mm | 71.4 mm | 8.1 mm | 188 g | 5.8 in | 458 | [specs](https://support.apple.com/en-us/111879) |
+| iPhone 11 | 2019 | 150.9 mm | 75.7 mm | 8.3 mm | 194 g | 6.1 in | 326 | [specs](https://support.apple.com/en-us/111865) |
+| iPhone SE (2nd generation) | 2020 | 138.4 mm | 67.3 mm | 7.3 mm | 148 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111882) |
+| iPhone XS Max | 2018 | 157.5 mm | 77.4 mm | 7.7 mm | 208 g | 6.5 in | 458 | [specs](https://support.apple.com/en-us/111880) |
+| iPhone XS | 2018 | 143.6 mm | 70.9 mm | 7.7 mm | 177 g | 5.8 in | 458 | [specs](https://support.apple.com/en-us/111881) |
+| iPhone XR | 2018 | 150.9 mm | 75.7 mm | 8.3 mm | 194 g | 6.1 in | 326 | [specs](https://support.apple.com/en-us/111868) |
+| iPhone X | 2017 | 143.6 mm | 70.9 mm | 7.7 mm | 174 g | 5.8 in | 458 | [specs](https://support.apple.com/en-us/111864) |
+| iPhone 8 Plus | 2017 | 158.4 mm | 78.1 mm | 7.5 mm | 202 g | 5.5 in | 401 | [specs](https://support.apple.com/en-us/111950) |
+| iPhone 8 | 2017 | 138.4 mm | 67.3 mm | 7.3 mm | 148 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111976) |
+| iPhone 7 Plus | 2016 | 158.2 mm | 77.9 mm | 7.3 mm | 188 g | 5.5 in | 401 | [specs](https://support.apple.com/en-us/111953) |
+| iPhone 7 | 2016 | 138.3 mm | 67.1 mm | 7.1 mm | 138 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111943) |
 
-The folding iPhone Duo has two rows, one closed and one open. They share a `product_id`.
+The folding iPhone Duo has two rows, one closed and one open. They share a `product_id`. Every number above is Apple's, from the linked specs page, and the JSON adds the Newsroom page for each phone's dates.
 
 ## Get the data
 
