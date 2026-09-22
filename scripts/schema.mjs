@@ -3,12 +3,15 @@ const TOP_KEYS = [
   'name',
   'description',
   'license',
+  'license_url',
   'homepage',
   'source',
   'verified',
   'notes',
   'units',
   'count',
+  'site_models_count',
+  'historic_count',
   'phones',
 ];
 
@@ -35,6 +38,9 @@ const PHONE_KEYS = [
   'url',
   'source_url',
   'dates_source_url',
+  'model_identifiers',
+  'model_numbers',
+  'model_identifiers_source',
 ];
 
 const NUMBER_KEYS = [
@@ -57,7 +63,6 @@ const STRING_KEYS = [
   'family',
   'announced',
   'released',
-  'url',
   'source_url',
   'dates_source_url',
 ];
@@ -79,17 +84,32 @@ function sameKeySet(value, expected) {
   return true;
 }
 
+function isWholeNumber(value) {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0;
+}
+
+function validateStringArray(value, label) {
+  if (!Array.isArray(value)) {
+    throw new Error(`${label} must be an array`);
+  }
+  for (let i = 0; i < value.length; i += 1) {
+    if (typeof value[i] !== 'string') {
+      throw new Error(`${label}[${i}] must be a string`);
+    }
+  }
+}
+
 export function validateDataset(data) {
   if (!isPlainObject(data)) {
     throw new Error('Dataset must be an object');
   }
   if (!sameKeySet(data, TOP_KEYS)) {
-    throw new Error('Dataset keys do not match schema_version 1');
+    throw new Error('Dataset keys do not match schema_version 2');
   }
-  if (data.schema_version !== 1) {
+  if (data.schema_version !== 2) {
     throw new Error(`Unexpected schema_version: ${data.schema_version}`);
   }
-  for (const key of ['name', 'description', 'license', 'homepage', 'source', 'verified']) {
+  for (const key of ['name', 'description', 'license', 'license_url', 'homepage', 'source', 'verified']) {
     if (typeof data[key] !== 'string') {
       throw new Error(`${key} must be a string`);
     }
@@ -114,14 +134,25 @@ export function validateDataset(data) {
   if (data.count !== data.phones.length) {
     throw new Error(`count ${data.count} does not match phones.length ${data.phones.length}`);
   }
+  if (!isWholeNumber(data.site_models_count)) {
+    throw new Error('site_models_count must be a non-negative integer');
+  }
+  if (!isWholeNumber(data.historic_count)) {
+    throw new Error('historic_count must be a non-negative integer');
+  }
+  if (data.site_models_count + data.historic_count !== data.phones.length) {
+    throw new Error(
+      `site_models_count ${data.site_models_count} + historic_count ${data.historic_count} does not match phones.length ${data.phones.length}`,
+    );
+  }
 
   const seen = new Set();
   for (let i = 0; i < data.phones.length; i += 1) {
-    validatePhone(data.phones[i], i, seen);
+    validatePhone(data.phones[i], i, seen, data.site_models_count);
   }
 }
 
-function validatePhone(phone, index, seen) {
+function validatePhone(phone, index, seen, siteModelsCount) {
   const label = `phones[${index}]`;
   if (!isPlainObject(phone)) {
     throw new Error(`${label} must be an object`);
@@ -134,16 +165,22 @@ function validatePhone(phone, index, seen) {
       throw new Error(`${label}.${key} must be a string`);
     }
   }
+  const historic = index >= siteModelsCount;
+  if (phone.url === null) {
+    if (!historic) {
+      throw new Error(`${label}.url must be a string on a site row`);
+    }
+  } else if (typeof phone.url !== 'string') {
+    throw new Error(`${label}.url must be a string or null`);
+  }
   if (phone.state !== 'closed' && phone.state !== 'open' && phone.state !== null) {
     throw new Error(`${label}.state must be closed, open, or null`);
   }
-  if (!Array.isArray(phone.also_known_as)) {
-    throw new Error(`${label}.also_known_as must be an array`);
-  }
-  for (let i = 0; i < phone.also_known_as.length; i += 1) {
-    if (typeof phone.also_known_as[i] !== 'string') {
-      throw new Error(`${label}.also_known_as[${i}] must be a string`);
-    }
+  validateStringArray(phone.also_known_as, `${label}.also_known_as`);
+  validateStringArray(phone.model_identifiers, `${label}.model_identifiers`);
+  validateStringArray(phone.model_numbers, `${label}.model_numbers`);
+  if (phone.model_identifiers_source !== 'apple' && phone.model_identifiers_source !== 'secondary') {
+    throw new Error(`${label}.model_identifiers_source must be apple or secondary`);
   }
   for (const key of NUMBER_KEYS) {
     if (typeof phone[key] !== 'number' || !Number.isFinite(phone[key])) {

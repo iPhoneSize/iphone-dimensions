@@ -13,6 +13,8 @@ function stateRank(state) {
 function freezePhone(phone) {
   Object.freeze(phone.resolution_px);
   Object.freeze(phone.also_known_as);
+  Object.freeze(phone.model_identifiers);
+  Object.freeze(phone.model_numbers);
   return Object.freeze(phone);
 }
 
@@ -31,22 +33,53 @@ function getPhone(id) {
   return undefined;
 }
 
+function listIncludes(values, needle) {
+  for (const value of values) {
+    if (value.toLowerCase().includes(needle)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function findPhones(query) {
   const needle = query.toLowerCase();
   const matches = [];
   for (const phone of phones) {
-    if (phone.name.toLowerCase().includes(needle) || phone.id.toLowerCase().includes(needle)) {
+    if (
+      phone.name.toLowerCase().includes(needle)
+      || phone.id.toLowerCase().includes(needle)
+      || listIncludes(phone.also_known_as, needle)
+      || listIncludes(phone.model_identifiers, needle)
+      || listIncludes(phone.model_numbers, needle)
+    ) {
       matches.push(phone);
-      continue;
-    }
-    for (const alias of phone.also_known_as) {
-      if (alias.toLowerCase().includes(needle)) {
-        matches.push(phone);
-        break;
-      }
     }
   }
   return matches;
+}
+
+function getByIdentifier(modelIdentifier) {
+  for (const phone of phones) {
+    for (const identifier of phone.model_identifiers) {
+      if (identifier === modelIdentifier) {
+        return phone;
+      }
+    }
+  }
+  return undefined;
+}
+
+function getByModelNumber(aNumber) {
+  const needle = aNumber.toLowerCase();
+  for (const phone of phones) {
+    for (const modelNumber of phone.model_numbers) {
+      if (modelNumber.toLowerCase() === needle) {
+        return phone;
+      }
+    }
+  }
+  return undefined;
 }
 
 function getProduct(productId) {
@@ -59,4 +92,4 @@ function getProduct(productId) {
   matches.sort((left, right) => stateRank(left.state) - stateRank(right.state));
   return matches;
 }
-export { phones, meta, getPhone, findPhones, getProduct };
+export { phones, meta, getPhone, findPhones, getProduct, getByIdentifier, getByModelNumber };

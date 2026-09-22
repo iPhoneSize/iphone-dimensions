@@ -1,8 +1,8 @@
 # iphone-dimensions
 
-Apple's published dimensions for every iPhone since the iPhone 7: height, width, depth, weight, display, resolution and ppi, with the Apple page linked on every row. JSON, CSV and an npm package.
+Apple's published dimensions for every iPhone since the original in 2007: height, width, depth, weight, display, resolution and ppi, plus each model's hardware identifiers and A-numbers, with the Apple page linked on every row. JSON, CSV and an npm package.
 
-It is the data behind [iphonesize.com](https://iphonesize.com), which draws any two phones next to each other at true scale. The table is also a web page at [iphonesize.com/data](https://iphonesize.com/data).
+It is the data behind [iphonesize.com](https://iphonesize.com), which draws any two phones since the iPhone 7 next to each other at true scale. The 13 phones before that are in the data only. The table is also a web page at [iphonesize.com/data](https://iphonesize.com/data).
 
 | Phone | Released | Height | Width | Depth | Weight | Display | ppi | Apple source |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -49,6 +49,19 @@ It is the data behind [iphonesize.com](https://iphonesize.com), which draws any 
 | iPhone 8 | 2017 | 138.4 mm | 67.3 mm | 7.3 mm | 148 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111976) |
 | iPhone 7 Plus | 2016 | 158.2 mm | 77.9 mm | 7.3 mm | 188 g | 5.5 in | 401 | [specs](https://support.apple.com/en-us/111953) |
 | iPhone 7 | 2016 | 138.3 mm | 67.1 mm | 7.1 mm | 138 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111943) |
+| iPhone | 2007 | 115 mm | 61 mm | 11.6 mm | 135 g | 3.5 in | 163 | [specs](https://support.apple.com/en-us/112445) |
+| iPhone 3G | 2008 | 115.5 mm | 62.1 mm | 12.3 mm | 133 g | 3.5 in | 163 | [specs](https://support.apple.com/en-us/112496) |
+| iPhone 3GS | 2009 | 115.5 mm | 62.1 mm | 12.3 mm | 135 g | 3.5 in | 163 | [specs](https://support.apple.com/en-us/112307) |
+| iPhone 4 | 2010 | 115.2 mm | 58.6 mm | 9.3 mm | 137 g | 3.5 in | 326 | [specs](https://support.apple.com/en-us/112562) |
+| iPhone 4s | 2011 | 115.2 mm | 58.6 mm | 9.3 mm | 140 g | 3.5 in | 326 | [specs](https://support.apple.com/en-us/112004) |
+| iPhone 5 | 2012 | 123.8 mm | 58.6 mm | 7.6 mm | 112 g | 4 in | 326 | [specs](https://support.apple.com/en-us/112016) |
+| iPhone 5c | 2013 | 124.4 mm | 59.2 mm | 8.97 mm | 132 g | 4 in | 326 | [specs](https://support.apple.com/en-us/111917) |
+| iPhone 5s | 2013 | 123.8 mm | 58.6 mm | 7.6 mm | 112 g | 4 in | 326 | [specs](https://support.apple.com/en-us/111973) |
+| iPhone 6 | 2014 | 138.1 mm | 67 mm | 6.9 mm | 129 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111954) |
+| iPhone 6 Plus | 2014 | 158.1 mm | 77.8 mm | 7.1 mm | 172 g | 5.5 in | 401 | [specs](https://support.apple.com/en-us/111940) |
+| iPhone 6s | 2015 | 138.3 mm | 67.1 mm | 7.1 mm | 143 g | 4.7 in | 326 | [specs](https://support.apple.com/en-us/111952) |
+| iPhone 6s Plus | 2015 | 158.2 mm | 77.9 mm | 7.3 mm | 192 g | 5.5 in | 401 | [specs](https://support.apple.com/en-us/111996) |
+| iPhone SE (1st generation) | 2016 | 123.8 mm | 58.6 mm | 7.6 mm | 113 g | 4 in | 326 | [specs](https://support.apple.com/en-us/112005) |
 
 The folding iPhone Duo has two rows, closed and open, sharing one `product_id`.
 
@@ -68,13 +81,15 @@ npm install iphone-dimensions
 ```
 
 ```js
-import { phones, getPhone, findPhones, getProduct } from 'iphone-dimensions';
+import { phones, getPhone, findPhones, getProduct, getByIdentifier, getByModelNumber } from 'iphone-dimensions';
 
 getPhone('iphone-15-pro');
 // { name: 'iPhone 15 Pro', height_mm: 146.6, width_mm: 70.6, depth_mm: 8.25, weight_g: 187, ppi: 460, ... }
 
 findPhones('17 air');      // finds "iPhone Air", which many people call the 17 Air
-getProduct('iphone-duo');  // both Duo rows, closed first
+getProduct('iphone-duo');        // both Duo rows, closed first
+getByIdentifier('iPhone16,1');   // iPhone 15 Pro
+getByModelNumber('A3101');       // iPhone 15 Pro
 ```
 
 Works with `import` and `require`, in Node 18 or later, bundlers and browsers. No dependencies. The raw files are exported as `iphone-dimensions/data/iphones.json` and `.csv`.
@@ -94,7 +109,10 @@ Works with `import` and `require`, in Node 18 or later, bundlers and browsers. N
 | `height_in`, `width_in`, `depth_in`, `weight_oz` | Calculated from the metric values, 2 decimals |
 | `display_in` | Apple's marketed display diagonal |
 | `resolution_px`, `ppi` | Pixels, and Apple's stated pixel density |
-| `url` | The phone's page on iphonesize.com |
+| `url` | The phone's page on iphonesize.com, or null for the 13 phones older than the site covers |
+| `model_identifiers` | Apple's internal model strings, such as iPhone16,1 |
+| `model_numbers` | The A-numbers on the back or in Settings, all regional variants |
+| `model_identifiers_source` | `apple` when the identifier string comes from Apple's device database in Xcode, `secondary` when only The Apple Wiki has it (the original, 3G, 3GS, 4 and Duo). A-numbers are always from Apple |
 | `source_url` | The Apple tech-specs page the measurements were checked against |
 | `dates_source_url` | The Apple Newsroom page the dates were checked against |
 
@@ -102,7 +120,7 @@ Top-level `verified` is the date the measurements were last checked; `notes` car
 
 ## Where the numbers come from
 
-Measurements, display size, resolution and pixel density are Apple's, from the tech-specs page linked on each row. Dates are from Apple Newsroom, linked in the JSON. Nothing is measured or estimated by us.
+Measurements, display size, resolution and pixel density are Apple's, from the tech-specs page linked on each row. Dates are from Apple Newsroom, linked in the JSON. A-numbers are from Apple's Identify your iPhone model page. Nothing is measured or estimated by us.
 
 The inch and ounce columns are converted from Apple's metric figures and can differ from Apple's own rounded numbers by 0.01. `ppi` is Apple's stated figure. Depth is the body without the camera bump.
 
@@ -114,6 +132,6 @@ The inch and ounce columns are converted from Apple's metric figures and can dif
 
 ## Licence
 
-MIT for the code. The data is facts Apple publishes; use it however you like. This licence cannot grant rights that belong to Apple. A link back to [iphonesize.com](https://iphonesize.com) is appreciated.
+The data is released under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/): use it for anything, no conditions. The code is MIT. Neither can grant rights that belong to Apple. A link back to [iphonesize.com](https://iphonesize.com) is appreciated.
 
 Not affiliated with Apple. iPhone is a trademark of Apple Inc.

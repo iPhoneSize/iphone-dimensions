@@ -23,9 +23,12 @@ export interface IPhone {
   display_in: number;
   resolution_px: ResolutionPx;
   ppi: number;
-  url: string;
+  url: string | null;
   source_url: string;
   dates_source_url: string;
+  model_identifiers: readonly string[];
+  model_numbers: readonly string[];
+  model_identifiers_source: 'apple' | 'secondary';
 }
 
 export interface Units {
@@ -35,16 +38,19 @@ export interface Units {
 }
 
 export interface Meta {
-  schema_version: 1;
+  schema_version: 2;
   name: string;
   description: string;
   license: string;
+  license_url: string;
   homepage: string;
   source: string;
   units: Units;
   verified: string;
   notes: readonly string[];
   count: number;
+  site_models_count: number;
+  historic_count: number;
 }
 
 export const phones: readonly IPhone[];
@@ -52,3 +58,5 @@ export const meta: Meta;
 export function getPhone(id: string): IPhone | undefined;
 export function findPhones(query: string): IPhone[];
 export function getProduct(productId: string): IPhone[];
+export function getByIdentifier(modelIdentifier: string): IPhone | undefined;
+export function getByModelNumber(aNumber: string): IPhone | undefined;

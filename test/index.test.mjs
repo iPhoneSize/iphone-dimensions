@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { parseCsv } from '../scripts/csv.mjs';
 import { CSV_COLUMNS, rowCells } from '../scripts/table.mjs';
-import { findPhones, getPhone, getProduct, meta, phones } from '../dist/index.js';
+import { findPhones, getByIdentifier, getByModelNumber, getPhone, getProduct, meta, phones } from '../dist/index.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const raw = JSON.parse(readFileSync(join(root, 'data', 'iphones.json'), 'utf8'));
@@ -49,9 +49,19 @@ function appleHost(url) {
 }
 
 test('count matches the phone list', () => {
+  assert.equal(raw.schema_version, 2);
+  assert.equal(meta.schema_version, 2);
+  assert.equal(raw.count, 56);
+  assert.equal(raw.phones.length, 56);
+  assert.equal(raw.site_models_count, 43);
+  assert.equal(raw.historic_count, 13);
+  assert.equal(meta.site_models_count, 43);
+  assert.equal(meta.historic_count, 13);
   assert.equal(raw.count, raw.phones.length);
   assert.equal(meta.count, phones.length);
   assert.equal(phones.length, raw.phones.length);
+  assert.equal(typeof meta.license_url, 'string');
+  assert.equal(meta.license_url.length > 0, true);
 });
 
 test('every id is unique', () => {
@@ -107,9 +117,34 @@ test('source URLs are Apple hosts', () => {
   }
 });
 
-test('every phone url is on iphonesize.com', () => {
+test('url is null only on historic rows', () => {
+  assert.equal(raw.site_models_count + raw.historic_count, raw.phones.length);
+  for (let i = 0; i < raw.phones.length; i += 1) {
+    const phone = raw.phones[i];
+    if (i < raw.site_models_count) {
+      assert.equal(typeof phone.url, 'string', phone.id);
+      assert.equal(phone.url.startsWith('https://iphonesize.com/'), true, phone.id);
+    } else {
+      assert.equal(phone.url, null, phone.id);
+    }
+  }
+});
+
+test('every phone has identifier arrays and an allowed source', () => {
   for (const phone of raw.phones) {
-    assert.equal(phone.url.startsWith('https://iphonesize.com/'), true, phone.id);
+    assert.equal(Array.isArray(phone.model_identifiers), true, phone.id);
+    assert.equal(Array.isArray(phone.model_numbers), true, phone.id);
+    for (const identifier of phone.model_identifiers) {
+      assert.equal(typeof identifier, 'string', phone.id);
+    }
+    for (const modelNumber of phone.model_numbers) {
+      assert.equal(typeof modelNumber, 'string', phone.id);
+    }
+    assert.equal(
+      phone.model_identifiers_source === 'apple' || phone.model_identifiers_source === 'secondary',
+      true,
+      phone.id,
+    );
   }
 });
 
@@ -207,11 +242,40 @@ test("getProduct('iphone-duo') returns closed then open", () => {
   assert.equal(rows[0].id, 'iphone-duo');
 });
 
+test('iphone-2007 is 115 x 61 x 11.6 mm, 135 g, released 2007-06-29', () => {
+  const phone = getPhone('iphone-2007');
+  assert.equal(phone.height_mm, 115);
+  assert.equal(phone.width_mm, 61);
+  assert.equal(phone.depth_mm, 11.6);
+  assert.equal(phone.weight_g, 135);
+  assert.equal(phone.released, '2007-06-29');
+  assert.equal(phone.model_identifiers_source, 'secondary');
+});
+
+test("getByIdentifier('iPhone16,1') is iphone-15-pro", () => {
+  const phone = getByIdentifier('iPhone16,1');
+  assert.equal(phone.id, 'iphone-15-pro');
+});
+
+test("getByModelNumber('A3101') is iphone-15-pro", () => {
+  assert.equal(getByModelNumber('A3101').id, 'iphone-15-pro');
+  assert.equal(getByModelNumber('a3101').id, 'iphone-15-pro');
+});
+
+test("findPhones matches a model identifier and an A-number", () => {
+  const byIdentifier = findPhones('iPhone16,1').map((phone) => phone.id);
+  const byNumber = findPhones('A3101').map((phone) => phone.id);
+  assert.equal(byIdentifier.includes('iphone-15-pro'), true);
+  assert.equal(byNumber.includes('iphone-15-pro'), true);
+});
+
 test('mutation of a phone throws in strict mode', () => {
   const phone = getPhone('iphone-15-pro');
   assert.equal(Object.isFrozen(phone), true);
   assert.equal(Object.isFrozen(phone.resolution_px), true);
   assert.equal(Object.isFrozen(phone.also_known_as), true);
+  assert.equal(Object.isFrozen(phone.model_identifiers), true);
+  assert.equal(Object.isFrozen(phone.model_numbers), true);
   assert.equal(Object.isFrozen(meta), true);
   assert.throws(() => {
     phone.name = 'changed';

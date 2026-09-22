@@ -22,6 +22,9 @@ export const CSV_COLUMNS = [
   'url',
   'source_url',
   'dates_source_url',
+  'model_identifiers',
+  'model_numbers',
+  'model_identifiers_source',
 ];
 
 function cellText(value) {
@@ -59,5 +62,8 @@ export function rowCells(phone) {
     cellText(phone.url),
     cellText(phone.source_url),
     cellText(phone.dates_source_url),
+    phone.model_identifiers.join(' | '),
+    phone.model_numbers.join(' | '),
+    cellText(phone.model_identifiers_source),
   ];
 }

@@ -40,6 +40,9 @@ const phoneFields = [
   'url',
   'source_url',
   'dates_source_url',
+  'model_identifiers',
+  'model_numbers',
+  'model_identifiers_source',
 ];
 
 const metaFields = [
@@ -53,6 +56,9 @@ const metaFields = [
   'notes',
   'units',
   'count',
+  'license_url',
+  'site_models_count',
+  'historic_count',
 ];
 
 function isPlainObject(value) {
@@ -270,7 +276,11 @@ async function replacePair(jsonText, csvText) {
 try {
   const oldText = await readFile(jsonPath, 'utf8');
   const oldData = JSON.parse(oldText);
-  const [jsonText, csvText] = await Promise.all([download(jsonUrl), download(csvUrl)]);
+  const fetchedAt = Date.now();
+  const [jsonText, csvText] = await Promise.all([
+    download(`${jsonUrl}?t=${fetchedAt}`),
+    download(`${csvUrl}?t=${fetchedAt}`),
+  ]);
   const data = JSON.parse(jsonText);
   validateDataset(data);
   validateCsvRows(parseCsv(csvText), data.phones);
