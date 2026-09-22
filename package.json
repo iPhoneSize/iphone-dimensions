@@ -1,6 +1,6 @@
 {
   "name": "iphone-dimensions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Apple's published dimensions for every iPhone since the iPhone 7: height, width, depth, weight, display and pixel density, in mm and inches, each row cited to Apple's tech specs.",
   "license": "MIT",
   "type": "module",
