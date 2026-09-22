@@ -1,0 +1,38 @@
+# Publishes to npm when a GitHub Release is published. Authenticates with npm trusted
+# publishing (OpenID Connect): no npm token is stored anywhere, and npm generates
+# provenance attestations automatically. Configure the trusted publisher on
+# npmjs.com under the package's Settings: organization iPhoneSize, repository
+# iphone-dimensions, workflow filename publish.yml.
+name: publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or later; Node 22 ships an older npm.
+      - run: npm install -g npm@latest
+      - run: npm --version
+      - run: npm test
+      # Refuse to publish a version that does not match the release tag (tag v1.2.3, version 1.2.3).
+      - name: Check the tag matches package.json
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$version" ]; then
+            echo "release tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+      - run: npm publish
